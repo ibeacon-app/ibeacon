@@ -50,6 +50,17 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     ////////////////////////////////////////////////////////////////
     
+    func getDefaultBeacons() -> [(UUID, CLBeaconMajorValue, CLBeaconMinorValue, Int, Int)] { // [(uuid, major, minor, x, y)]
+        let DefaultBeacons : [(UUID, CLBeaconMajorValue, CLBeaconMinorValue, Int, Int)] = [
+            ( UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!, CLBeaconMajorValue(1), CLBeaconMinorValue(0), 0 , 0 ),
+            ( UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!, CLBeaconMajorValue(1), CLBeaconMinorValue(1), 10, 0 ),
+            ( UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!, CLBeaconMajorValue(1), CLBeaconMinorValue(2), 0 , 5 ),
+            ( UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!, CLBeaconMajorValue(1), CLBeaconMinorValue(3), 10, 5 ) ]
+        return DefaultBeacons
+    }
+    
+    ////////////////////////////////////////////////////////////////
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
             rangeBeacons()
@@ -61,13 +72,15 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         
         guard (beacons.first?.proximity) != nil else { print("Couldn't find the beacon!"); return }
+        // var DefaultBeacons = getDefaultBeacons()
         
         for b in beacons {
             if !BeaconsList.contains(b) {
                 BeaconsList.append(b)
             }
         }
-        BeaconsList.sorted(by: { $0.rssi > $1.rssi }) // or proximity
+        BeaconsList.sorted(by: { $0.rssi > $1.rssi }) // or proximity /// nemidunam chejuri 10 ta rssi
+                                                                      /// az ye beacon ro begiram zakhire konam :((
         
     }
     
