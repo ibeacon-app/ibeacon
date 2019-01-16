@@ -117,7 +117,7 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
                 }
             }
             sortedBeacon.removeFirst()
-        }  
+        }
     }
     
     ////////////////////////////////////////////////////////////////
