@@ -49,6 +49,13 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
             self.locationManager.delegate = self
         }
     }
+   
+    ///////////////////////////////////////////////////////////////
+    
+    func startLocating() {
+        self.locationManager.startUpdatingLocation()
+        self.rangeBeacons()
+    }
     
     ////////////////////////////////////////////////////////////////
     
