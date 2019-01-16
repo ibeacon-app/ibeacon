@@ -27,17 +27,27 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     let locationManager = CLLocationManager()
     
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
+        self.initLocating()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func initLocating() {
+        if CLLocationManager.isRangingAvailable() {
+            self.locationManager.requestWhenInUseAuthorization()
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+            self.locationManager.allowsBackgroundLocationUpdates = true
+            self.locationManager.delegate = self
+        }
     }
     
     ////////////////////////////////////////////////////////////////
@@ -81,6 +91,8 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
         }
         BeaconsList.sorted(by: { $0.rssi > $1.rssi }) // or proximity /// nemidunam chejuri 10 ta rssi
                                                                       /// az ye beacon ro begiram zakhire konam :((
+        
+        
         
     }
     
