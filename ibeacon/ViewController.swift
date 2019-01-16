@@ -19,27 +19,29 @@ var p=0.0
 var gain=0.0
 var x=1.0
 var first = true
-var BeaconsList = [CLBeacon]()
+var sortedBeacon = [CLBeacon]()
 var Xout = Double()
 var Yout = Double()
+var rssi = [[Int]]()
 
 class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     let locationManager = CLLocationManager()
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         self.initLocating()
+        self.startLocating()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    ///////////////////////////////////////////////////////////////
     
     func initLocating() {
         if CLLocationManager.isRangingAvailable() {
@@ -53,10 +55,17 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     ///////////////////////////////////////////////////////////////
     
     func startLocating() {
+        locationManager.pausesLocationUpdatesAutomatically = false
         self.locationManager.startUpdatingLocation()
         self.rangeBeacons()
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if locations.count > 0 {
+            
+        }
+    }
+
     ////////////////////////////////////////////////////////////////
     
     func rangeBeacons() {
@@ -80,7 +89,7 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
-            rangeBeacons()
+            self.rangeBeacons()
         }
     }
     
@@ -91,21 +100,30 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
         guard (beacons.first?.proximity) != nil else { print("Couldn't find the beacon!"); return }
         // var DefaultBeacons = getDefaultBeacons()
         
-        for b in beacons {
-            if !BeaconsList.contains(b) {
-                BeaconsList.append(b)
+        sortedBeacon = beacons.sorted(by: { $0.rssi < $1.rssi }) // or proximity
+        for i in 0...3 {
+            if (sortedBeacon.count > 0){
+                if (sortedBeacon.first?.minor == 0){
+                    rssi[0].append((sortedBeacon.first?.rssi)!)
+                }
+                if (sortedBeacon.first?.minor == 1){
+                    rssi[1].append((sortedBeacon.first?.rssi)!)
+                }
+                if (sortedBeacon.first?.minor == 2){
+                    rssi[2].append((sortedBeacon.first?.rssi)!)
+                }
+                if (sortedBeacon.first?.minor == 3){
+                    rssi[3].append((sortedBeacon.first?.rssi)!)
+                }
             }
-        }
-        BeaconsList.sorted(by: { $0.rssi > $1.rssi }) // or proximity /// nemidunam chejuri 10 ta rssi
-                                                                      /// az ye beacon ro begiram zakhire konam :((
-        
-        
-        
+            sortedBeacon.removeFirst()
+        }  
     }
     
     ////////////////////////////////////////////////////////////////
     
-    func average( X : [Int], n : Int ) -> Double{
+    func average( X : [Int], n : Int ) -> Double
+    {
         
         var sum = 0
         for i in 0...n {
@@ -201,7 +219,7 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
                 return
             }
             
-            var a1 = (d[i]*d[i] - d[(i+1)%3]*d[(i+1)%3] + D*D)
+            let a1 = (d[i]*d[i] - d[(i+1)%3]*d[(i+1)%3] + D*D)
             a = a1 / (2.0 * D)
             
             /* Determine the coordinates of point 2. */
@@ -240,50 +258,74 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     ////////////////////////////////////////////////////////////////
     
-    func main(){
+    func main(beacons: [CLBeacon]){
         
-        var ave : Double ,varians : Double
+        var ave = [Double]()
+        var varians : Double
         var Distance : [Double] = [0,0,0]
-        var RSSI_p : Double
-        var Dist : Double
-        var count = 0
-        var RSSI : [Int]
+        var RSSI_p = [Double]()
+        var Dist = [Double]()
+        var count = [Int]()
+        var max : Int
+        var maxIndex = 0
+        var cnt = 0
+        var xPos = [Double]()
+        var yPos = [Double]()
+        /////////////////////////////////////
+        for i in 0...4 {
+            if(rssi[i].count > 10){
+                cnt += 1
+                rssi[i].sort(by: {$0 < $1})
+            }
+        }
         
-        /* for i in 0...3{
-         ave = average(X : RSSI, n : 10)
-         varians = std(X : RSSI, n : 10)
-         for i in 0...10{
-         if Double(RSSI[i]) < (ave - 2*varians){
-         RSSI.remove(at: i)
-         count += 1
-         }
-         }
-         RSSI_p = average( X : RSSI, n : count)
-         Dist = find_distance( rssi_p : RSSI_p, rssi_c : -6)
-         
-         Distance[i] = kalman_filter( dist : Dist)
-         }
-         */
-        
+        if (cnt > 3){
+            max = rssi[0].first!
+            for i in 0...4{
+                if (max < rssi[i].first!){
+                    max = rssi[i].first!
+                    maxIndex = i
+                }
+            }
+            
+            for i in 0...4{
+                if (i != maxIndex){
+                    ave[i] = average(X : rssi[i], n : 10)
+                    varians = std(X : rssi[i], n : 10)
+                    for j in 0...10{
+                        if Double(rssi[i][j]) < (ave[i] - 2*varians){
+                            rssi[i].remove(at: j)
+                            count[i] += 1
+                        }
+                    }
+                    RSSI_p[i] = average( X : rssi[i], n : count[i])
+                    Dist[i] = find_distance( rssi_p : RSSI_p[i], rssi_c : -6)
+                    
+                    Distance[i] = kalman_filter( dist : Dist[i])
+                    
+                    if (i == 0){
+                        xPos.append(0)
+                        yPos.append(0)
+                    }
+                    if (i == 1){
+                        xPos.append(10)
+                        yPos.append(0)
+                    }
+                    if (i == 2){
+                        xPos.append(0)
+                        yPos.append(5)
+                    }
+                    if (i == 3){
+                        xPos.append(10)
+                        yPos.append(5)
+                    }
+                }
+            }
+        }
         // call triangulation ba x,y beacon hayi ke nazdikemun budan + Distance
         // repeat :)
-        
+        triangulation(x: xPos, y: yPos, d: Distance)
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        ///////////////////////////////////////////////////////////////
 }
