@@ -20,11 +20,11 @@ var gain=0.0
 var x=1.0
 var first = true
 var sortedBeacon = [CLBeacon]()
-var Xout = Double()
-var Yout = Double()
 var rssi = [[Int]]()
 
 class ViewController: UIViewController ,CLLocationManagerDelegate {
+    
+    //MARK: Properties
     
     let locationManager = CLLocationManager()
     
@@ -100,19 +100,22 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
         guard (beacons.first?.proximity) != nil else { print("Couldn't find the beacon!"); return }
         // var DefaultBeacons = getDefaultBeacons()
         
+        print(beacons)
+        
         sortedBeacon = beacons.sorted(by: { $0.rssi < $1.rssi }) // or proximity
+        
         for i in 0...3 {
-            if (sortedBeacon.count > 0){
-                if (sortedBeacon.first?.minor == 0){
+            if sortedBeacon.count > 0 {
+                if sortedBeacon.first?.minor == 0 {
                     rssi[0].append((sortedBeacon.first?.rssi)!)
                 }
-                if (sortedBeacon.first?.minor == 1){
+                else if sortedBeacon.first?.minor == 1 {
                     rssi[1].append((sortedBeacon.first?.rssi)!)
                 }
-                if (sortedBeacon.first?.minor == 2){
+                else if sortedBeacon.first?.minor == 2 {
                     rssi[2].append((sortedBeacon.first?.rssi)!)
                 }
-                if (sortedBeacon.first?.minor == 3){
+                else if sortedBeacon.first?.minor == 3 {
                     rssi[3].append((sortedBeacon.first?.rssi)!)
                 }
             }
@@ -124,7 +127,6 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     func average( X : [Int], n : Int ) -> Double
     {
-        
         var sum = 0
         for i in 0...n {
             sum += X[i]
@@ -170,7 +172,7 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
             p = A*A*p+q
             gain = (p*H)/(p*H*H+r)
             p = (1 - gain*H)*p
-            d += gain*(Double(dist)-H*d)
+            d += gain*(Double(dist) - H*d)
         }
         return d
     }
@@ -195,7 +197,7 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     func triangulation( x : [Double],
                         y : [Double],
-                        d : [Double]){
+                        d : [Double]) -> (Double, Double) {
         
         var a, dx, dy, D, h, rx, ry : Double
         var Xh, Yh : Double
@@ -212,11 +214,11 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
             
             guard D < (d[i] + d[(i+1)%3]) else{
                 /* no solution. circles do not intersect. */
-                return
+                return (0,0)
             }
             guard D > fabs(d[i] - d[(i+1)%3]) else {
                 /* no solution. one circle is contained in the other */
-                return
+                return (0,0)
             }
             
             let a1 = (d[i]*d[i] - d[(i+1)%3]*d[(i+1)%3] + D*D)
@@ -252,13 +254,12 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
             xarray[i] = xi
             yarray[i] = yi
         }
-        
-        (Xout, Yout) = mean(X : xarray, Y : yarray) // markaze mosalas
+        return mean(X : xarray, Y : yarray) // markaze mosalas
     }
     
     ////////////////////////////////////////////////////////////////
     
-    func main(beacons: [CLBeacon]){
+    func main(beacons: [CLBeacon]) -> (Double,Double) {
         
         var ave = [Double]()
         var varians : Double
@@ -271,7 +272,11 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
         var cnt = 0
         var xPos = [Double]()
         var yPos = [Double]()
+        var Xout = Double()
+        var Yout = Double()
+        
         /////////////////////////////////////
+        
         for i in 0...4 {
             if(rssi[i].count > 10){
                 cnt += 1
@@ -279,7 +284,7 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
             }
         }
         
-        if (cnt > 3){
+        if cnt > 3 {
             max = rssi[0].first!
             for i in 0...4{
                 if (max < rssi[i].first!){
@@ -288,17 +293,17 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
                 }
             }
             
-            for i in 0...4{
-                if (i != maxIndex){
+            for i in 0...4 { // chera 4 bar for zadi ? bayad 3 ta beacon faghat bedim
+                if i != maxIndex {
                     ave[i] = average(X : rssi[i], n : 10)
                     varians = std(X : rssi[i], n : 10)
                     for j in 0...10{
                         if Double(rssi[i][j]) < (ave[i] - 2*varians){
                             rssi[i].remove(at: j)
-                            count[i] += 1
+                            count[i] += 1 // tedadi ke munde ro mage nabayad hesab kard ?
                         }
                     }
-                    RSSI_p[i] = average( X : rssi[i], n : count[i])
+                    RSSI_p[i] = average( X : rssi[i], n : count[i]) // tedad oonayi ke hazf shode ro dade ?
                     Dist[i] = find_distance( rssi_p : RSSI_p[i], rssi_c : -6)
                     
                     Distance[i] = kalman_filter( dist : Dist[i])
@@ -324,8 +329,12 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
         }
         // call triangulation ba x,y beacon hayi ke nazdikemun budan + Distance
         // repeat :)
-        triangulation(x: xPos, y: yPos, d: Distance)
+        
+        (Xout, Yout) = triangulation(x: xPos, y: yPos, d: Distance) // alan age xpos , ypos 4 ta dade dashte bashe dg triangualation nis ke
+                                                                    // tasiri to mohasebat nadare vali age tedad beacon ha ziad beshe alaki faghat for zadim
+        return (Xout, Yout)
     }
+    
     
         ///////////////////////////////////////////////////////////////
 }
