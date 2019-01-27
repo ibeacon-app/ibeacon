@@ -9,22 +9,19 @@ import UIKit
 import CoreLocation
 import Foundation
 
-var A=1.0
-var H=1.0
-var C=1.0
-var r=1.0
-var q=1.0
-var d=0.0
-var p=0.0
-var gain=0.0
-var x=1.0
-var first = true
+let A = 1.0
+let H = 1.0
+var Xk = 0.0
+var Pk = 1.0 // we have error
+let Q = 0.0
 var sortedBeacon = [CLBeacon]()
 var rssi = [[Int]]()
+var cnt = 0
 
 class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     //MARK: Properties
+    //@IBOutlet weak var person: UIImageView!
     
     let locationManager = CLLocationManager()
     
@@ -57,20 +54,22 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     func startLocating() {
         locationManager.pausesLocationUpdatesAutomatically = false
         self.locationManager.startUpdatingLocation()
-        self.rangeBeacons()
+        //self.rangeBeacons()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count > 0 {
-            
+            Xk = 0.0
+            Pk = 1.0 // we have error
+            rssi.removeAll()
         }
     }
 
     ////////////////////////////////////////////////////////////////
     
     func rangeBeacons() {
-        let uuid = UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!
-        let region = CLBeaconRegion(proximityUUID: uuid, identifier: "beacon")
+        let uuid = UUID(uuidString :"74278bda-b644-4520-8f0c-720eaf059935")!
+        let region = CLBeaconRegion(proximityUUID: uuid, identifier: "iTriplez")
         locationManager.startRangingBeacons(in: region)
     }
     
@@ -78,10 +77,10 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     func getDefaultBeacons() -> [(UUID, CLBeaconMajorValue, CLBeaconMinorValue, Int, Int)] { // [(uuid, major, minor, x, y)]
         let DefaultBeacons : [(UUID, CLBeaconMajorValue, CLBeaconMinorValue, Int, Int)] = [
-            ( UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!, CLBeaconMajorValue(1), CLBeaconMinorValue(0), 0 , 0 ),
-            ( UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!, CLBeaconMajorValue(1), CLBeaconMinorValue(1), 10, 0 ),
-            ( UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!, CLBeaconMajorValue(1), CLBeaconMinorValue(2), 0 , 5 ),
-            ( UUID(uuidString :"2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6")!, CLBeaconMajorValue(1), CLBeaconMinorValue(3), 10, 5 ) ]
+            ( UUID(uuidString :"74278bda-b644-4520-8f0c-720eaf059935")!, CLBeaconMajorValue(4369), CLBeaconMinorValue(1), 0 , 0 ),
+            ( UUID(uuidString :"74278bda-b644-4520-8f0c-720eaf059935")!, CLBeaconMajorValue(4369), CLBeaconMinorValue(2), 10, 0 ),
+            ( UUID(uuidString :"74278bda-b644-4520-8f0c-720eaf059935")!, CLBeaconMajorValue(4369), CLBeaconMinorValue(3), 0 , 5 ),
+            ( UUID(uuidString :"74278bda-b644-4520-8f0c-720eaf059935")!, CLBeaconMajorValue(4369), CLBeaconMinorValue(4), 10, 5 ) ]
         return DefaultBeacons
     }
     
@@ -101,7 +100,8 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
         // var DefaultBeacons = getDefaultBeacons()
         
         print(beacons)
-        
+        //person.center.x = 80
+        //person.center.y = 160
         sortedBeacon = beacons.sorted(by: { $0.rssi < $1.rssi }) // or proximity
         
         for i in 0...3 {
@@ -120,6 +120,17 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
                 }
             }
             sortedBeacon.removeFirst()
+        }
+        
+        for i in 0...4 {
+            if(rssi[i].count > 10){
+                cnt += 1
+                rssi[i].sort(by: {$0 < $1})
+            }
+        }
+         if cnt > 3 {
+            //(person.center.x , person.center.y) =
+            main()  // update position
         }
     }
     
@@ -160,21 +171,27 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     ////////////////////////////////////////////////////////////////
     
-    func kalman_filter( dist : Double ) -> Double{
+    func kalman_filter(RSSI : [Int], n : Int ) -> Double {
         
-        if first {
-            x = Double(dist)/C
-            p = r/(C*C)
-            first = false
-        }
-        else {
-            d = A*x
-            p = A*A*p+q
-            gain = (p*H)/(p*H*H+r)
-            p = (1 - gain*H)*p
-            d += gain*(Double(dist) - H*d)
-        }
-        return d
+        // A=B=H=1 / Uk = 0 / p = error / R= khatayi ke mohasebe makane dare masalan hodud 0.5m / Q = 0
+        // Zk = dade alan and Xk = x e ke pishbini mishe
+        // Xk = Xk-1 / Pk = Pk-1 pishbini
+        // Kk=Pk/Pk+R     Xk=Xk+gain(Zk-Xk)   Pk=(1-Kk)Pk
+        
+        let RSSI_p = average( X : RSSI, n : n)
+        let Dist = find_distance( rssi_p : RSSI_p, rssi_c : -59)
+        let R = 0.5 // the error of Xk
+        var Zk : Double
+        var gain : Double
+        
+        Xk = A*Xk
+        Pk = A*Pk + Q
+        Zk = Dist
+        gain = (H*Pk)/(H*H*Pk + R)
+        Xk += gain*(Zk - H*Xk)
+        Pk = (1 - gain*H)*Pk
+    
+        return Xk
     }
     
     ////////////////////////////////////////////////////////////////
@@ -254,22 +271,19 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
             xarray[i] = xi
             yarray[i] = yi
         }
-        return mean(X : xarray, Y : yarray) // markaze mosalas
+        return mean(X : xarray, Y : yarray)
     }
     
     ////////////////////////////////////////////////////////////////
     
-    func main(beacons: [CLBeacon]) -> (Double,Double) {
+    func main() -> (CGFloat,CGFloat) {
         
         var ave = [Double]()
         var varians : Double
         var Distance : [Double] = [0,0,0]
-        var RSSI_p = [Double]()
-        var Dist = [Double]()
-        var count = [Int]()
+        var count : [Int] = [10,10,10,10]
         var max : Int
         var maxIndex = 0
-        var cnt = 0
         var xPos = [Double]()
         var yPos = [Double]()
         var Xout = Double()
@@ -277,14 +291,7 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
         
         /////////////////////////////////////
         
-        for i in 0...4 {
-            if(rssi[i].count > 10){
-                cnt += 1
-                rssi[i].sort(by: {$0 < $1})
-            }
-        }
         
-        if cnt > 3 {
             max = rssi[0].first!
             for i in 0...4{
                 if (max < rssi[i].first!){
@@ -293,20 +300,23 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
                 }
             }
             
-            for i in 0...4 { // chera 4 bar for zadi ? bayad 3 ta beacon faghat bedim
+            for i in 0...4 {
                 if i != maxIndex {
                     ave[i] = average(X : rssi[i], n : 10)
                     varians = std(X : rssi[i], n : 10)
                     for j in 0...10{
                         if Double(rssi[i][j]) < (ave[i] - 2*varians){
                             rssi[i].remove(at: j)
-                            count[i] += 1 // tedadi ke munde ro mage nabayad hesab kard ?
+                            count[i] -= 1
                         }
                     }
-                    RSSI_p[i] = average( X : rssi[i], n : count[i]) // tedad oonayi ke hazf shode ro dade ?
-                    Dist[i] = find_distance( rssi_p : RSSI_p[i], rssi_c : -6)
+                    //------------------------------------------------------------------------
                     
-                    Distance[i] = kalman_filter( dist : Dist[i])
+                    let RSSI_p = average( X : rssi[i], n : count[i])
+                    Distance[i] = find_distance( rssi_p : RSSI_p, rssi_c : -59)
+                    // kalman_filter(RSSI: rssi[i], n: count[i])
+                    
+                    //------------------------------------------------------------------------
                     
                     if (i == 0){
                         xPos.append(0)
@@ -326,15 +336,14 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
                     }
                 }
             }
-        }
-        // call triangulation ba x,y beacon hayi ke nazdikemun budan + Distance
-        // repeat :)
         
-        (Xout, Yout) = triangulation(x: xPos, y: yPos, d: Distance) // alan age xpos , ypos 4 ta dade dashte bashe dg triangualation nis ke
-                                                                    // tasiri to mohasebat nadare vali age tedad beacon ha ziad beshe alaki faghat for zadim
-        return (Xout, Yout)
+        
+        (Xout, Yout) = triangulation(x: xPos, y: yPos, d: Distance)
+        
+        return (CGFloat(Xout), CGFloat(Yout))
     }
     
     
         ///////////////////////////////////////////////////////////////
 }
+

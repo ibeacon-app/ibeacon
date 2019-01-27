@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D4ACE6F21FDA77900A44660 /* ble.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D4ACE6E21FDA77900A44660 /* ble.png */; };
+		8D4ACE7321FDA8B100A44660 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8D4ACE7221FDA8B100A44660 /* 4.jpg */; };
+		8D4ACE7621FDA98200A44660 /* smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8D4ACE7421FDA98100A44660 /* smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg */; };
+		8D4ACE7721FDA98200A44660 /* kisspng-iphone-emoji-apple-ios-11-emojis-5abe1fe31ed9c6.7613688515224094431264.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8D4ACE7521FDA98200A44660 /* kisspng-iphone-emoji-apple-ios-11-emojis-5abe1fe31ed9c6.7613688515224094431264.jpg */; };
 		8DF33FC321ED313700E5348A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF33FC221ED313700E5348A /* AppDelegate.swift */; };
 		8DF33FC521ED313700E5348A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF33FC421ED313700E5348A /* ViewController.swift */; };
 		8DF33FC821ED313700E5348A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DF33FC621ED313700E5348A /* Main.storyboard */; };
@@ -34,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8D4ACE6E21FDA77900A44660 /* ble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ble.png; path = ../../../Desktop/ble.png; sourceTree = "<group>"; };
+		8D4ACE7221FDA8B100A44660 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 4.jpg; path = ../../../Desktop/4.jpg; sourceTree = "<group>"; };
+		8D4ACE7421FDA98100A44660 /* smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg"; path = "../../../Desktop/smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg"; sourceTree = "<group>"; };
+		8D4ACE7521FDA98200A44660 /* kisspng-iphone-emoji-apple-ios-11-emojis-5abe1fe31ed9c6.7613688515224094431264.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "kisspng-iphone-emoji-apple-ios-11-emojis-5abe1fe31ed9c6.7613688515224094431264.jpg"; path = "../../../Desktop/kisspng-iphone-emoji-apple-ios-11-emojis-5abe1fe31ed9c6.7613688515224094431264.jpg"; sourceTree = "<group>"; };
 		8DF33FBF21ED313700E5348A /* ibeacon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ibeacon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DF33FC221ED313700E5348A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DF33FC421ED313700E5348A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +105,10 @@
 		8DF33FC121ED313700E5348A /* ibeacon */ = {
 			isa = PBXGroup;
 			children = (
+				8D4ACE7521FDA98200A44660 /* kisspng-iphone-emoji-apple-ios-11-emojis-5abe1fe31ed9c6.7613688515224094431264.jpg */,
+				8D4ACE7421FDA98100A44660 /* smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg */,
+				8D4ACE7221FDA8B100A44660 /* 4.jpg */,
+				8D4ACE6E21FDA77900A44660 /* ble.png */,
 				8DF33FC221ED313700E5348A /* AppDelegate.swift */,
 				8DF33FC421ED313700E5348A /* ViewController.swift */,
 				8DF33FC621ED313700E5348A /* Main.storyboard */,
@@ -229,7 +241,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DF33FCD21ED313700E5348A /* LaunchScreen.storyboard in Resources */,
+				8D4ACE6F21FDA77900A44660 /* ble.png in Resources */,
 				8DF33FCA21ED313700E5348A /* Assets.xcassets in Resources */,
+				8D4ACE7621FDA98200A44660 /* smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg in Resources */,
+				8D4ACE7721FDA98200A44660 /* kisspng-iphone-emoji-apple-ios-11-emojis-5abe1fe31ed9c6.7613688515224094431264.jpg in Resources */,
+				8D4ACE7321FDA8B100A44660 /* 4.jpg in Resources */,
 				8DF33FC821ED313700E5348A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
