@@ -240,15 +240,8 @@ class ViewController: UIViewController ,CLLocationManagerDelegate {
     
     func mean(X : [Double], Y : [Double]) -> (Double,Double){
         
-        // m0 = A+B/2 , m1 = B+C/2 , m2 = A+C/2
-        // A,m1 --> y-yA = (m1y - yA/m1x - xA)(x-xA) , B,m2 --> ...
-        // y = y => x?
-        
-        let A = ((Y[2]+Y[0]/2) - Y[1]) / ((X[2]+X[0]/2) - X[1])
-        let B = ((Y[1]+Y[2]/2) - Y[0]) / ((X[1]+X[2]/2) - X[0])
-        let x = (A - B)*(A * X[1] - B * X[0])
-        let y = A*(x - X[1]) + Y[1]
-        
+        let x = (X[0] + X[1] + X[2])/3
+        let y = (Y[0] + Y[1] + Y[2])/3
         return (x,y)
     }
     
