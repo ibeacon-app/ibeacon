@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13156.2"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,39 +18,76 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xDi-aw-6Z5">
-                                <rect key="frame" x="20" y="20" width="386" height="464"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xDi-aw-6Z5">
+                                <rect key="frame" x="5" y="25" width="404" height="464"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ble.png" translatesAutoresizingMaskIntoConstraints="NO" id="Fln-qH-nnH">
-                                        <rect key="frame" x="8" y="8" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ble" translatesAutoresizingMaskIntoConstraints="NO" id="CC9-4I-LmN">
+                                        <rect key="frame" x="344" y="404" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Mnh-1n-YPG"/>
+                                            <constraint firstAttribute="width" constant="50" id="rDH-OQ-Dx4"/>
+                                        </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ble.png" translatesAutoresizingMaskIntoConstraints="NO" id="CC9-4I-LmN">
-                                        <rect key="frame" x="316" y="386" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ble" translatesAutoresizingMaskIntoConstraints="NO" id="4mg-qz-B5L">
+                                        <rect key="frame" x="10" y="404" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="IAl-fq-x7G"/>
+                                            <constraint firstAttribute="width" constant="50" id="Qjc-8L-rcS"/>
+                                        </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ble.png" translatesAutoresizingMaskIntoConstraints="NO" id="4mg-qz-B5L">
-                                        <rect key="frame" x="15" y="386" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="eMO-ku-7tJ">
+                                    <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person" translatesAutoresizingMaskIntoConstraints="NO" id="eMO-ku-7tJ">
                                         <rect key="frame" x="119" y="131" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ble.png" translatesAutoresizingMaskIntoConstraints="NO" id="Lrw-rG-18I">
-                                        <rect key="frame" x="322" y="8" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ble" translatesAutoresizingMaskIntoConstraints="NO" id="Fln-qH-nnH">
+                                        <rect key="frame" x="10" y="10" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="ALj-St-AVk"/>
+                                            <constraint firstAttribute="height" constant="50" id="zAn-Mf-xOV"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ble" translatesAutoresizingMaskIntoConstraints="NO" id="Lrw-rG-18I">
+                                        <rect key="frame" x="344" y="10" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="lkA-r8-TPk"/>
+                                            <constraint firstAttribute="height" constant="50" id="x91-nM-XO9"/>
+                                        </constraints>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.75785949990000001" blue="0.91461677750000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Lrw-rG-18I" firstAttribute="top" secondItem="xDi-aw-6Z5" secondAttribute="top" constant="10" id="4gn-iD-M0x"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="400" id="6az-Ul-Hax"/>
+                                    <constraint firstAttribute="trailing" secondItem="CC9-4I-LmN" secondAttribute="trailing" constant="10" id="AGr-sj-Cfg"/>
+                                    <constraint firstItem="Fln-qH-nnH" firstAttribute="leading" secondItem="xDi-aw-6Z5" secondAttribute="leading" constant="15" id="Hlz-H3-Qql"/>
+                                    <constraint firstItem="4mg-qz-B5L" firstAttribute="leading" secondItem="xDi-aw-6Z5" secondAttribute="leading" constant="10" id="IFi-IW-E8l"/>
+                                    <constraint firstItem="Fln-qH-nnH" firstAttribute="top" secondItem="xDi-aw-6Z5" secondAttribute="top" constant="8" id="KqK-7Z-bb0"/>
+                                    <constraint firstAttribute="trailing" secondItem="CC9-4I-LmN" secondAttribute="trailing" constant="10" id="LOv-mA-Jtp"/>
+                                    <constraint firstItem="Fln-qH-nnH" firstAttribute="top" secondItem="xDi-aw-6Z5" secondAttribute="top" constant="10" id="OSU-Tz-sSM"/>
+                                    <constraint firstAttribute="height" constant="464" id="TSE-kf-F8x"/>
+                                    <constraint firstAttribute="bottom" secondItem="4mg-qz-B5L" secondAttribute="bottom" constant="10" id="bja-eu-Otp"/>
+                                    <constraint firstItem="Fln-qH-nnH" firstAttribute="leading" secondItem="xDi-aw-6Z5" secondAttribute="leading" constant="10" id="j1O-SP-GWo"/>
+                                    <constraint firstAttribute="trailing" secondItem="Lrw-rG-18I" secondAttribute="trailing" constant="10" id="oZr-4w-QvV"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="400" id="tOt-Kd-87Q"/>
+                                    <constraint firstAttribute="bottom" secondItem="CC9-4I-LmN" secondAttribute="bottom" constant="10" id="tc1-4Z-Pob"/>
+                                    <constraint firstAttribute="trailing" secondItem="Lrw-rG-18I" secondAttribute="trailing" constant="10" id="u54-Q0-Tc1"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="xDi-aw-6Z5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="SMb-ay-vgJ"/>
+                            <constraint firstItem="xDi-aw-6Z5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="5" id="byf-QX-l9M"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xDi-aw-6Z5" secondAttribute="trailing" constant="5" id="eyR-rI-WZt"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="person" destination="eMO-ku-7tJ" id="Eta-Nw-uhq"/>
+                        <outlet property="ble1" destination="Fln-qH-nnH" id="Kha-82-dJI"/>
+                        <outlet property="ble2" destination="Lrw-rG-18I" id="8bm-G4-vTk"/>
+                        <outlet property="ble3" destination="4mg-qz-B5L" id="NXf-6Q-M9h"/>
+                        <outlet property="ble4" destination="CC9-4I-LmN" id="sai-i8-YG0"/>
+                        <outlet property="person" destination="eMO-ku-7tJ" id="zeU-bi-l7l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -58,7 +96,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ble.png" width="400" height="400"/>
-        <image name="smiling-face-with-sunglasses-cool-emoji-png-5a3bb11b918bf2.8374611315138614035962.jpg" width="260" height="280"/>
+        <image name="ble" width="2400" height="3263"/>
+        <image name="person" width="260" height="280"/>
     </resources>
 </document>
